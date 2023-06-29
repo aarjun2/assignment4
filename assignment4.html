@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        function MyApp() {
+            const [username, setUsername] = React.useState('');
+            const [password, setPassword] = React.useState('');
+            const [email, setEmail] = React.useState('');
+            const [phone, setPhone] = React.useState('');
+            const [errors, setErrors] = React.useState([]);
+            function validateErrors() {
+                let validateArray = [];
+                if(username.trim() === '') validateArray.push("username empty");
+                if(password.trim() === '') validateArray.push("password empty");
+                if(email.trim() === '') validateArray.push("email empty");
+                if(phone.trim() === '') validateArray.push("phone empty");
+                return validateArray;
+            }
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                let validateArray = validateErrors();
+                if(validateArray.length > 0) {
+                    setErrors(validateArray);
+                    return;
+                }
+                setErrors([]);
+                setUsername('');
+                setPassword('');
+                setEmail('');
+                setPhone('');
+                console.log(username, password, email, phone);
+            };
+            return (
+               <>
+                <form onSubmit={handleSubmit}> 
+                        <label> username </label> 
+                        <input type="text"
+                        value = {username}
+                        onChange={e => setUsername(e.target.value)}/>
+                        <label> password </label> 
+                        <input type="password"
+                        value = {password}
+                        onChange={e => setPassword(e.target.value)}/>
+                        <label> email </label> 
+                        <input type="email"
+                        value = {email}
+                        onChange={e => setEmail(e.target.value)}/>
+                        <label> mobile number </label> 
+                        <input type="tel"
+                        value = {phone}
+                        onChange={e => setPhone(e.target.value)}/>
+                        <button type="submit"> Submit </button>
+                    </form>
+                    <ul>
+                        {errors ? errors.map((message,index) => <li key={index}>{message}</li>) : null} 
+                    </ul>
+                </>
+            );
+        }
+
+        const container = document.getElementById('root');
+        const root = ReactDOM.createRoot(container);
+        root.render(<MyApp />);
+
+    </script>
+    <!--
+      Note: this page is a great way to try React but it's not suitable for production.
+      It slowly compiles JSX with Babel in the browser and uses a large development build of React.
+
+      Read this page for starting a new React project with JSX:
+      https://react.dev/learn/start-a-new-react-project
+
+      Read this page for adding React with JSX to an existing project:
+      https://react.dev/learn/add-react-to-an-existing-project
+    -->
+  </body>
+</html>
